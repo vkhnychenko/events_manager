@@ -54,7 +54,7 @@ export default {
     try {
       await this.$store.dispatch("getEventById", +this.$route.params.id);
     } catch (e) {
-      console.log(e);
+      console.log();
     }
     this.title = this.eventInfo.title;
     this.description = this.eventInfo.description;
@@ -98,13 +98,12 @@ export default {
       } else {
         event["datetime"] = new Date().toISOString();
       }
-      console.log(event);
       try {
         await this.$store.dispatch("updateEvent", event);
         this.$message("Задача успешно обновлена");
         this.$router.push("/list");
       } catch (e) {
-        console.log(e);
+        console.log();
       }
     },
     deleteEvent() {
@@ -113,7 +112,7 @@ export default {
         this.$message("Задача успешно удалена");
         this.$router.push("/list");
       } catch (e) {
-        console.log(e);
+        console.log();
       }
     },
   },

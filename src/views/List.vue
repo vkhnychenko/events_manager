@@ -2,20 +2,24 @@
   <div>
     <div class="row">
       <div class="input-field col s4">
-        <form id="select">
-          <select ref="select" v-model="filter">
-            <option value disabled>Показать события за последний:</option>
-            <option value="month">Месяц</option>
-            <option value="week">Неделю</option>
-            <option value="day">День</option>
-          </select>
-          <button
-            v-if="filter"
-            type="reset"
-            class="btn btn-small red"
-            @click="clearFilter"
-          >Очистить фильтр</button>
-        </form>
+        <select id="select" ref="select" v-model="filter">
+          <option value disabled>Показать события за последний:</option>
+          <option value="month">Месяц</option>
+          <option value="week">Неделю</option>
+          <option value="day">День</option>
+        </select>
+        <button v-if="filter" type="reset" class="btn btn-small red" @click="clearFilter">Очистить</button>
+      </div>
+      <div class="input field col s4 offset-s4">
+        <input
+          class="search-input"
+          type="text"
+          v-model="search"
+          placeholder="Найти событие по заголовку"
+        />
+
+        <button class="btn btn-small" @click.prevent="sortEventsBySearch">Искать</button>
+        <button v-if="search" class="btn btn-small red" @click="clearSearch">Очистить</button>
       </div>
     </div>
     <hr />
@@ -67,66 +71,59 @@ export default {
     search: "",
   }),
   computed: {
-    ...mapGetters(["allEvents", "searchValue"]),
-    // filteredProducts() {
-    //     if (this.sortedProducts.length) {
-    //       return this.sortedProducts
-    //     } else {
-    //       return this.PRODUCTS
-    //     }
-    //   },
+    ...mapGetters(["allEvents", "totalItems"]),
   },
   watch: {
-    async filter() {
-      let params = { page: this.page };
-      if (this.filter === "day") {
-        params["day"] = new Date().getDate();
-      } else if (this.filter === "week") {
-        params["week"] = new Date().getWeek();
-      } else if (this.filter === "month") {
-        params["month"] = new Date().getMonth() + 1;
-      }
-      this.totalItems = await this.$store.dispatch("getEvents", params);
-      this.setupPagination(this.totalItems, this.allEvents.length);
-      await this.$store.dispatch("getSearchValue", '');
-    },
-    searchValue() {
-      this.sortProductsBySearchValue(this.searchValue);
+    filter() {
+      this.sortEventsByFilter(this.filter);
     },
   },
   async mounted() {
-    console.log(this.searchValue);
     window.M.FormSelect.init(this.$refs.select);
-    if (this.searchValue) {
-      this.sortProductsBySearchValue(this.searchValue);
-      await this.$store.dispatch("getSearchValue", '');
-    } else {
-      try {
-        this.totalItems = await this.$store.dispatch("getEvents", {
-          page: this.page,
-        });
-        
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    this.setupPagination(this.totalItems, this.allEvents.length);
+    const params = { page: this.page };
+    await this.getEventsFromAPI(params);
   },
   methods: {
-    clearFilter() {
-      document.getElementById("select").reset();
-      this.filter = null;
-    },
-    async sortProductsBySearchValue(value) {
+    async getEventsFromAPI(params) {
       try {
-        this.totalItems = await this.$store.dispatch("getEvents", {
-          page: this.page,
-          search: value,
-        });
+        await this.$store.dispatch("getEvents", params);
         this.setupPagination(this.totalItems, this.allEvents.length);
       } catch (e) {
-        console.log(e);
+        console.log();
       }
+    },
+    async sortEventsByFilter(filter) {
+      if (filter) {
+        let params = { page: this.page };
+        this.search = null;
+        if (filter === "day") {
+          params["day"] = new Date().getDate();
+        } else if (filter === "week") {
+          params["week"] = new Date().getWeek();
+        } else if (filter === "month") {
+          params["month"] = new Date().getMonth() + 1;
+        }
+        await this.getEventsFromAPI(params);
+      }
+    },
+    async sortEventsBySearch() {
+      this.filter = null
+      document.getElementById("select").selectedIndex = -1;
+      window.M.FormSelect.init(this.$refs.select);
+      const params = { page: this.page, search: this.search };
+      await this.getEventsFromAPI(params);
+    },
+    async clearFilter() {
+      document.getElementById("select").selectedIndex = -1;
+      window.M.FormSelect.init(this.$refs.select);
+      this.filter = null;
+      const params = { page: this.page };
+      await this.getEventsFromAPI(params);
+    },
+    async clearSearch() {
+      this.search = null;
+      const params = { page: this.page };
+      await this.getEventsFromAPI(params);
     },
   },
 };

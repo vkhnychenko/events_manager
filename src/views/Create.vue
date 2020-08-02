@@ -17,12 +17,12 @@
           >{{description.length}}/2048</span>
         </div>
         <div class="input-field">
-          <input id='datepicker' type="text" ref="datepicker" class="validate" required />
+          <input id="datepicker" type="text" ref="datepicker" class="validate" required />
           <label for="title">Дата</label>
           <span class="helper-text" data-error="Нужно обязательно выбрать дату"></span>
         </div>
         <div class="input-field">
-          <input id='timepicker' type="text" ref="timepicker" class="validate" required />
+          <input id="timepicker" type="text" ref="timepicker" class="validate" required />
           <label for="title">Время</label>
           <span class="helper-text" data-error="Нужно обязательно выбрать время"></span>
         </div>
@@ -58,14 +58,15 @@ export default {
       const event = {
         title: this.title,
         description: this.description,
-        datetime:
-          this.date.date.toString("yyyy-MM-dd") +
-          "T" +
-          this.time.time +
-          new Date().toString(":ss.sssZ"),
+        datetime: 
+          new Date(
+            this.date.date.toString("yyyy-MM-dd") +
+              "T" +
+              this.time.time.toString("hh:mm")
+          
+        ),
         user: localStorage.getItem("userId"),
       };
-      console.log(event);
       try {
         await this.createEvent(event);
         this.$message("Задача успешно создана");
@@ -73,7 +74,7 @@ export default {
         document.getElementById('datepicker').value = ''
         document.getElementById('timepicker').value = ''
       } catch (e) {
-        console.log(e);
+        console.log();
       }
     },
   },

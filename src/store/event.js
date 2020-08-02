@@ -4,12 +4,12 @@ export default {
   state: {
     event: [],
     events: [],
+    totalItems: 0
   },
   actions: {
     async createEvent({ commit }, payload) {
       try {
-        const { data } = await axios.post("/api/events/", payload);
-        console.log("Data запроса", data);
+        await axios.post("/api/events/", payload );
       } catch (e) {
         commit("setError", e);
         throw e;
@@ -18,9 +18,8 @@ export default {
     async getEvents({ commit }, params) {
       try {
         const { data } = await axios.get(`/api/events/`, {params: params});
-        console.log("Data запроса", data);
         commit("updateEvents", data.results);
-        return data.count
+        commit("updateTotalItems", data.count);
       } catch (e) {
         commit("setError", e);
         throw e;
@@ -29,7 +28,6 @@ export default {
     async getEventById({ commit }, eventId) {
       try {
         const { data } = await axios.get(`/api/events/${eventId}/`);
-        console.log("get запрос", data);
         commit("updateEvent", data);
       } catch (e) {
         commit("setError", e);
@@ -38,8 +36,7 @@ export default {
     },
     async updateEvent({ commit }, payload) {
       try {
-        const { data } = await axios.patch(`/api/events/${payload.id}/`, payload);
-        console.log("patch запрос", data);
+        await axios.patch(`/api/events/${payload.id}/`, payload);
       } catch (e) {
         commit("setError", e);
         throw e;
@@ -47,8 +44,7 @@ export default {
     },
     async deleteEvent({ commit }, eventId) {
       try {
-        const { data } = await axios.delete(`/api/events/${eventId}/`);
-        console.log("delete запрос", data);
+        await axios.delete(`/api/events/${eventId}/`);
       } catch (e) {
         commit("setError", e);
         throw e;
@@ -61,7 +57,10 @@ export default {
     },
     updateEvent(state, event){
       state.event = event
-    }
+    },
+    updateTotalItems(state, totalItems){
+      state.totalItems = totalItems
+    },
   },
   getters: {
     allEvents(state) {
@@ -69,6 +68,9 @@ export default {
     },
     eventInfo(state){
       return state.event
+    },
+    totalItems(state){
+      return state.totalItems
     }
   },
 };

@@ -19,8 +19,8 @@ class EventFilter(filters.FilterSet):
 
 
 def send(user_email, title):
-    send_mail('Рассылка',
+    send_mail('Уведомление о наступлении события',
               f'Срок вашего события: {title} истекает через 1 час',
-              'events.notification2020@gmail.com',
+              'Events manager',
               [user_email],
               fail_silently=False)

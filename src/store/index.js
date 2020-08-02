@@ -8,7 +8,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     error: null,
-    searchValue:''
   },
   mutations: {
     setError(state, error){
@@ -17,14 +16,6 @@ export default new Vuex.Store({
     clearError(state){
       state.error = null
     },
-    setSearchValue(state, value){
-      state.searchValue = value
-    }
-  },
-  actions: {
-    getSearchValue({commit}, value){
-      commit('setSearchValue', value)
-    }
   },
   modules: {
     auth,event
@@ -33,8 +24,5 @@ export default new Vuex.Store({
     error(state) {
       return state.error;
     },
-    searchValue(state){
-      return state.searchValue
-    }
   }
 })

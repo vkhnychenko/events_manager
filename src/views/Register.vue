@@ -94,8 +94,6 @@ export default {
   },
   mounted() {
     this.date = new Date();
-    console.log(this.date.toString("yyyy-MM-dd"));
-    console.log(this.date.toString("HH-mm"));
   },
   methods: {
     ...mapActions(["register"]),
@@ -110,11 +108,10 @@ export default {
         username: this.username,
       };
       try {
-        console.log(formData);
         await this.register(formData);
         this.$router.push("/login?message=login");
       } catch (e) {
-        console.log(e);
+        console.log();
       }
     },
   },

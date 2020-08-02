@@ -15,7 +15,6 @@ export default {
     },
     watch:{
         error(e){
-            console.log(e.response.data.detail)
             if (e.response.data.detail){
                 this.$error(messages[e.response.data.detail])
             }

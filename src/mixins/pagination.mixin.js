@@ -3,7 +3,6 @@ export default {
     return {
       page: +this.$route.query.page || 1,
       pageCount: 0,
-      totalItems: 0,
     };
   },
   methods: {
@@ -12,7 +11,7 @@ export default {
         await this.$store.dispatch("getEvents", { page: page });
         this.$router.push(`${this.$route.path}?page=${page}`);
       } catch (e) {
-        console.log(e);
+        console.log();
       }
     },
     setupPagination(totalItems, pageSize) {

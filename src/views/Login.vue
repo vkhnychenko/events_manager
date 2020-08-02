@@ -80,7 +80,7 @@ export default {
         await this.createToken(formData);
         this.$router.push("/").catch(() => {});
       } catch (e) {
-        console.log(e);
+        console.log();
       }
     },
   },
