@@ -29,31 +29,31 @@
 Выполнить команды:
 * `$sudo apt install npm`
 * `$npm install`
-* `$npm run build`
 
 Создать файл `.env` с настройками:
 * `DEBUG`
 * `SECRET_KEY`
 * `DJANGO_ALLOWED_HOSTS`
-* `SQL_ENGINE`
-* `SQL_DATABASE`
-* `SQL_USER`
-* `SQL_PASSWORD`
-* `SQL_HOST`
-* `SQL_PORT`
-* `DATABASE`
-* `REDIS_HOST`
-* `REDIS_PORT`
-* `EMAIL_HOST`
-* `EMAIL_HOST_USER`
-* `EMAIL_HOST_PASSWORD`
-* `EMAIL_PORT`
+* `SQL_ENGINE=django.db.backends.postgresql`
+* `SQL_DATABASE=db_name`
+* `SQL_USER=db_user`
+* `SQL_PASSWORD=db_password`
+* `SQL_HOST=db`
+* `SQL_PORT=5432`
+* `DATABASE=postgres`
+* `REDIS_HOST=redis`
+* `REDIS_PORT=6379`
+* `EMAIL_HOST=smtp.google.com`
+* `EMAIL_HOST_USER=user_email`
+* `EMAIL_HOST_PASSWORDuser_password`
+* `EMAIL_PORT=smtp_port`
 
 Файл `.env.db` с настройками для БД postrges
-* `POSTGRES_USER`
-* `POSTGRES_PASSWORD`
-* `POSTGRES_DB`
+* `POSTGRES_DB=db_name`
+* `POSTGRES_USER=db_user`
+* `POSTGRES_PASSWORD=db_password`
 
+## Запуск 
+* `$npm run build`
+* `$docker-compose up --build`
 
-# Запуск # 
-`$docker-compose up --build`
