@@ -10,9 +10,10 @@ import './registerServiceWorker'
 import 'materialize-css/dist/js/materialize.min'
 import 'datejs'
 import 'material-icons/iconfont/material-icons.css'
+import { axios_defaults_baseURL } from "./devAndProdVariables";
 
-
-axios.defaults.baseURL = 'http://127.0.0.1'
+console.log('gggg', axios_defaults_baseURL)
+axios.defaults.baseURL = axios_defaults_baseURL;
 const token = localStorage.getItem('token')
 if (token) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
